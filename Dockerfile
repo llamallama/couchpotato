@@ -1,19 +1,12 @@
 FROM debian:8
-MAINTAINER Dominique Barton
+MAINTAINER Chris Jones
 
 #
 # Create user and group for CouchPotato.
 #
 
-RUN groupadd -r -g 666 couchpotato \
-    && useradd -r -u 666 -g 666 -d /couchpotato couchpotato
-
-#
-# Add CouchPotato init script.
-#
-
-ADD couchpotato.sh /couchpotato.sh
-RUN chmod 755 /couchpotato.sh
+RUN groupadd -r -g 10000 media \
+    && useradd -r -u 10001 -G media -d /couchpotato couchpotato
 
 #
 # Install CouchPotato and all required dependencies.
@@ -36,7 +29,9 @@ RUN export VERSION=3.0.1 \
 #
 # Define container settings.
 #
-
+RUN mkdir -p /datadir /media \
+    && chown couchpotato:media /datadir /media
+    
 VOLUME ["/datadir", "/media"]
 
 EXPOSE 5050
@@ -45,5 +40,7 @@ EXPOSE 5050
 # Start CouchPotato.
 #
 
+USER couchpotato
 WORKDIR /couchpotato
-CMD ["/couchpotato.sh"]
+ENTRYPOINT ["./CouchPotato.py"]
+CMD ["--data_dir=/datadir"],["--config_file=$/datadir/config.ini"]

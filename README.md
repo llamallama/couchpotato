@@ -15,7 +15,7 @@ The Docker image currently supports:
 To run the CouchPotato container you can execute:
 
 ```bash
-docker run --name couchpotato -v <datadir path>:/datadir -v <media path>:/media -p 5050:5050 couchpotato/couchpotato
+docker run --name couchpotato -v <datadir path>:/datadir -v <media path>:/media -p 5050:5050 llamallama/couchpotato
 ```
 
 Open a browser and point it to [http://my-docker-host:5050](http://my-docker-host:5050)
@@ -34,7 +34,7 @@ If you want to use the Docker Hub image within your existing Docker Compose file
 
 ```yaml
 couchpotato:
-    image: "couchpotato/couchpotato"
+    image: "llamallama/couchpotato"
     container_name: "couchpotato"
     volumes:
         - "<datadir path>:/datadir"
@@ -60,14 +60,4 @@ If you want to change this you've to set the `CONFIG` environment variable, for 
 
 ```
 CONFIG=/datadir/couchpotato.ini
-```
-
-### UID and GID
-
-By default CouchPotato runs with user ID and group ID `666`.
-If you want to run CouchPotato with different ID's you've to set the `CP_UID` and/or `CP_GID` environment variables, for example:
-
-```
-CP_UID=1234
-CP_GID=1234
 ```
